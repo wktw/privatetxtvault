@@ -1,8 +1,9 @@
-PrivateTxtVault 1.0.0
+PrivateTxtVault 1.1.1
 ======================
 
-PrivateTxtVault is a small offline command-line wrapper for age.exe. It encrypts
-and decrypts .txt files on a Windows computer using age passphrase encryption.
+PrivateTxtVault is a small offline command-line and GUI wrapper for age.exe. It
+encrypts and decrypts .txt files on a Windows computer using age passphrase
+encryption.
 It does not implement custom encryption and does not use internet, telemetry,
 cloud, update, analytics, or network features.
 
@@ -38,11 +39,22 @@ and decryption will refuse to run and will print a clear error.
 Running the tool
 ----------------
 
-From the PrivateTxtVault folder, run:
+From the PrivateTxtVault folder, run the command-line menu with:
 
   python PrivateTxtVault.py
 
-The menu is:
+Or run the simple graphical interface with:
+
+  python PrivateTxtVault.py --gui
+
+The GUI lets you choose .txt and .age files with file picker buttons, then run
+encrypt, decrypt, or checksum verification actions while status messages are
+shown in a log panel. The command-line menu and audit do not require Tkinter;
+Tkinter is imported only when --gui is used. Passphrases are still entered only
+into age.exe. If the age.exe passphrase prompt is not visible from the GUI, start
+the GUI from a terminal window so age.exe has a console for passphrase entry.
+
+The command-line menu is:
 
   PrivateTxtVault
 
@@ -201,10 +213,24 @@ next to PrivateTxtVault.py.
     Expected:
     - No decrypted verification file remains in vault/temp/.
 
-12. Offline machine
+12. GUI smoke test
+    Steps:
+    - Run python PrivateTxtVault.py --gui from a terminal.
+    - Use Choose .txt to select a sample .txt file.
+    - Click Encrypt selected .txt and enter the age.exe passphrase prompts in
+      the terminal if they appear there.
+    - Use Choose .age to select a valid .age file.
+    - Click Verify selected .age checksum or Decrypt selected .age.
+    Expected:
+    - The window stays responsive while the operation runs.
+    - The log panel shows the same success, warning, or failure messages as the
+      command-line workflow.
+    - Passphrases are not typed into the PrivateTxtVault GUI.
+
+13. Offline machine
     Steps:
     - Disconnect the computer from all networks.
-    - Run encryption, decryption, checksum verification, and --audit.
+    - Run encryption, decryption, checksum verification, --gui, and --audit.
     Expected:
     - The tool works normally without internet access.
     - No network connection is required.
@@ -219,5 +245,5 @@ Run:
 The audit checks for age.exe, required vault folders, absence of network imports,
 argument-list subprocess usage, absence of unsafe command-shell usage, obvious
 hardcoded passphrase variables, temp cleanup, version display, plaintext warnings,
-and checksum functionality. It is a practical sanity check, not a formal security
-proof.
+checksum functionality, GUI entrypoint wiring, and lazy Tkinter imports. It is a
+practical sanity check, not a formal security proof.
